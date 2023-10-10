@@ -19,6 +19,9 @@ class VinalController
     {
         if ($slug) {
             $title = u(str_replace('-', ' ', $slug))->title(true);
+            array_map();
+            array_map();
+            array_map();
         } else {
             $title = 'All gene';
         }
