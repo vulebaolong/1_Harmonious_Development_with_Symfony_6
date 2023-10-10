@@ -2,29 +2,44 @@
 
 namespace App\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Environment;
 use function Symfony\Component\String\u;
 
-class VinalController
+class VinalController extends AbstractController
 {
-    #[Route('/')]
-    public function homepage(): Response
+    #[Route('/', name: 'app_homepage')]
+    public function homepage(Environment $twig): Response
     {
-        return new Response('abc');
+        $tracks = [
+            ['song' => 'Gangsta\'s Paradise', 'artist' => 'Coolio'],
+            ['song' => 'Waterfalls', 'artist' => 'TLC'],
+            ['song' => 'Creep', 'artist' => 'Radiohead'],
+            ['song' => 'Kiss from a Rose', 'artist' => 'Seal'],
+            ['song' => 'On Bended Knee', 'artist' => 'Boyz II Men'],
+            ['song' => 'Fantasy', 'artist' => 'Mariah Carey'],
+        ];
+//        dd($tracks);
+//        dump($tracks);
+
+        $html = $twig->render('vinal/homepage.html.twig', [
+            'title' => "this is title",
+            'tracks' => $tracks,
+        ]);
+//        dd($html);
+
+        return new Response($html);
     }
 
-    #[Route('/letter/{slug}')]
+    #[Route('/browse/{slug}', name: 'app_browse')]
     public function letter(string $slug = null): Response
     {
-        if ($slug) {
-            $title = u(str_replace('-', ' ', $slug))->title(true);
-            array_map();
-            array_map();
-            array_map();
-        } else {
-            $title = 'All gene';
-        }
-        return new Response("OKE: " . $title);
+
+        $genre = $slug ? u(str_replace('-', ' ', $slug))->title(true) : null;
+        return $this->render('vinal/browse.html.twig', [
+            'genre' => $genre
+        ]);
     }
 }
