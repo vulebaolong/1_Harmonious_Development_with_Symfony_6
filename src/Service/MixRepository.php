@@ -30,6 +30,7 @@ class MixRepository
 
     public function findAll(): array
     {
+//        dd($this->githubContentClient);
         return $this->cache->get('mixed_data', function (CacheItemInterface $cacheItem) {
             $cacheItem->expiresAfter($this->isDebug === true ? 5 : 60); // hết hạn sau 5s
             return $this->githubContentClient->request('GET', '/SymfonyCasts/vinyl-mixes/main/mixes.json')->toArray();
